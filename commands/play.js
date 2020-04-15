@@ -15,6 +15,7 @@ async function play(message, args) {
         const connection = await message.member.voice.channel.join();
         fs.access(path, fs.F_OK, (err) => {
             if (err) {
+                connection.disconnect();
                 data.push('Hov! Den lyd har jeg ikke, du kan vælge mellem:');
                 fs.readdir('./sound/', (err, files) => {
                     // handling error
@@ -23,7 +24,7 @@ async function play(message, args) {
                     }
                     // listing all files using forEach
                     files.forEach((file) => {
-                        data.push('`' + file.split('.')[0] + '`\n');
+                        data.push('`' + file.split('.')[0] + '`');
                     });
                     message.channel.send(data, { split: true });
                 });
