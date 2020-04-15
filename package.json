@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/soer7022/BjarkeBot#readme",
   "dependencies": {
-    "discord.js": "^12.1.1"
+    "@discordjs/opus": "^0.1.0",
+    "discord.js": "^12.1.1",
+    "ffmpeg-static": "^4.1.1"
   }
 }

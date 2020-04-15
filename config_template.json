@@ -1,4 +1,5 @@
 {
     "token": "<BOT TOKEN>",
-    "prefix": "!"
+    "prefix": "!",
+    "voiceID": "<ID OF CHANNEL TO CONNECT TO>"
 }
