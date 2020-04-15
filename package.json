@@ -1,0 +1,26 @@
+{
+  "name": "bjarke-bot",
+  "version": "1.0.0",
+  "description": "A discord bot that yells at you and your friends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soer7022/BjarkeBot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Søren Eriksen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soer7022/BjarkeBot/issues"
+  },
+  "homepage": "https://github.com/soer7022/BjarkeBot#readme",
+  "dependencies": {
+    "discord.js": "^12.1.1"
+  }
+}
