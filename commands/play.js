@@ -1,7 +1,7 @@
 const fs = require('fs');
 module.exports = {
     name: 'play',
-    usage: 'play <navn på lyd>',
+    usage: '<navn på lyd>',
     description: 'Afspil lyd',
     execute(message, args) {
         play(message, args);
