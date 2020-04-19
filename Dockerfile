@@ -1,4 +1,4 @@
-FROM balenalib/rpi-node:12-latest-build
+FROM balenalib/rpi-node:11-latest-build
 COPY . /app
 WORKDIR /app
 RUN apt-get update && apt-get install -yq \
