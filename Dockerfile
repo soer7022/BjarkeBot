@@ -1,4 +1,4 @@
-FROM arm32v6/node:10-alpine
+FROM balenalib/rpi-node
 COPY . /app
 WORKDIR /app
 RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python
