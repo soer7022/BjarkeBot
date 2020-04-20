@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://i.imgur.com/fRKEGfE.jpg" align="center">
+  <img src="https://i.imgur.com/fRKEGfE.jpg" align="center" style="border-radius: 50%">
 </div>
 
 # BjarkeBot
