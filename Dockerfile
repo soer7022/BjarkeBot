@@ -1,4 +1,4 @@
-FROM balenalib/rpi-node:10-latest-build
+FROM node:12
 COPY . /app
 WORKDIR /app
 RUN apt-get update && apt-get install -yq \
