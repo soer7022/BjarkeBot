@@ -10,14 +10,14 @@ module.exports = {
 
 async function play(message, args) {
     const data = [];
-    const path = "./sound/" + args[0] + ".mp3";
+    const path = "/sound/" + args[0] + ".mp3";
     if (message.member.voice.channel) {
         const connection = await message.member.voice.channel.join();
         fs.access(path, fs.F_OK, (err) => {
             if (err) {
                 connection.disconnect();
                 data.push("Hov! Den lyd har jeg ikke, du kan vælge mellem:");
-                fs.readdir("./sound/", (err, files) => {
+                fs.readdir("/sound/", (err, files) => {
                     // handling error
                     if (err) {
                         return console.error("Unable to scan directory: " + err);
