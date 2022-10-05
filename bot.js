@@ -1,11 +1,18 @@
 require("console-stamp")(console);
 
 const fs = require("fs");
-const Discord = require("discord.js");
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const { prefix, token } = require("./config.json");
 
-const client = new Discord.Client({ intents: [Discord.GatewayIntentBits.Guilds] });
-client.commands = new Discord.Collection();
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers,
+    ],
+});
+client.commands = new Collection();
 
 // Add commands
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
