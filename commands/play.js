@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { joinVoiceChannel } = require("@discordjs/voice");
 module.exports = {
     name: "play",
     usage: "<navn på lyd>",
@@ -12,7 +13,11 @@ async function play(message, args) {
     const data = [];
     const path = "/sound/" + args[0] + ".mp3";
     if (message.member.voice.channel) {
-        const connection = await message.member.voice.channel.join();
+        const connection = joinVoiceChannel({
+            channelId: message.member.voice.channel.id,
+            guildId: message.guild.id,
+            adapterCreator: message.guild.voiceAdapterCreator,
+        });
         fs.access(path, fs.F_OK, (err) => {
             if (err) {
                 connection.disconnect();
