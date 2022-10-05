@@ -4,7 +4,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const { prefix, token } = require("./config.json");
 
-const client = new Discord.Client();
+const client = new Discord.Client({ intents: [Discord.GatewayIntentBits.Guilds] });
 client.commands = new Discord.Collection();
 
 // Add commands
