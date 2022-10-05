@@ -26,7 +26,7 @@ client.once("ready", () => {
     console.log("Bjarke er klar!");
 });
 
-client.on("message", async message => {
+client.on("messageCreate", async message => {
     console.log("Recived message: " + message.content);
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
