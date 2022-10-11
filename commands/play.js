@@ -1,52 +1,58 @@
-const fs = require("fs");
-const { joinVoiceChannel } = require("@discordjs/voice");
+const {SlashCommandBuilder} = require("discord.js");
+const {createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice');
+const path = require("node:path");
+const fs = require("node:fs");
+
+const soundPath = path.join(__dirname, '..', 'sound');
+
 module.exports = {
-    name: "play",
-    usage: "<navn på lyd>",
-    description: "Afspil lyd",
-    execute(message, args) {
-        play(message, args);
-    },
-};
+    data: new SlashCommandBuilder()
+        .setName("play")
+        .setDescription("Afspil lyd")
+        .addStringOption(option =>
+            option.setName("sound")
+                .setDescription("Navn på lyd")
+                .setRequired(true)
+                .setAutocomplete(true)),
 
-async function play(message, args) {
-    const data = [];
-    const path = "/sound/" + args[0] + ".mp3";
-    if (message.member.voice.channel) {
-        const connection = joinVoiceChannel({
-            channelId: message.member.voice.channel.id,
-            guildId: message.guild.id,
-            adapterCreator: message.guild.voiceAdapterCreator,
-        });
-        fs.access(path, fs.F_OK, (err) => {
-            if (err) {
-                connection.disconnect();
-                data.push("Hov! Den lyd har jeg ikke, du kan vælge mellem:");
-                fs.readdir("/sound/", (err, files) => {
-                    // handling error
-                    if (err) {
-                        return console.error("Unable to scan directory: " + err);
+    async execute(interaction) {
+        const sound = interaction.options.getString("sound");
+        const pathToSound = path.join(soundPath, sound + ".mp3");
+        if (!fs.existsSync(pathToSound)) {
+            let soundList = []
+            soundList.push("Hov! Den lyd har jeg ikke, du kan vælge mellem:");
+            let files = fs.readdirSync(soundPath).filter(file => file.endsWith('.mp3'))
+            files = files.map(file => "`" + file.split(".")[0] + "`")
+            soundList = soundList.concat(files);
+            await interaction.reply(soundList.join("\n"))
+        } else {
+            const resource = createAudioResource(pathToSound, {metadata: {title: sound, path: pathToSound}});
+            const player = createAudioPlayer({
+                behaviors: {
+                    noSubscriber: () => {
+                        interaction.channel.leave();
                     }
-                    // listing all files using forEach
-                    files.forEach((file) => {
-                        data.push("`" + file.split(".")[0] + "`");
-                    });
-                    message.channel.send(data, { split: true });
-                });
-            } else {
-                const dispatcher = connection.play(fs.createReadStream(path));
-                console.log("Started playing: " + path + " in server: " + message.guild.name + "/" + message.member.voice.channel.name + " as requested by: " + message.author.username);
+                }
+            });
 
-                dispatcher.once("finish", () => {
-                    connection.disconnect();
-                    console.log("Finished playing");
-                });
+            player.on(AudioPlayerStatus.Playing, () => {
+                console.log('The audio player has started playing: ' + player.state.resource.metadata.title, 'Path: ' + player.state.resource.metadata.path);
+            });
 
-                dispatcher.on("error", console.error);
-            }
-        });
-    } else {
-        message.reply("du skal være i en voice chat...");
-        console.log("User: " + message.author.username + " attempted to play sound: " + path + " but wasnt in voice");
+            player.on('error', error => {
+                console.error('Error:', error.message, 'with track', error.resource.metadata.title);
+            });
+
+
+            const connection = joinVoiceChannel({
+                channelId: interaction.member.voice.channelId,
+                guildId: interaction.guildId,
+                adapterCreator: interaction.guild.voiceAdapterCreator,
+            });
+            player.play(resource);
+            connection.subscribe(player);
+            //await interaction.reply(`Du har valgt ${sound}`);
+            await interaction.reply(`Spiller ${sound}`);
+        }
     }
 }
