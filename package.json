@@ -22,11 +22,8 @@
   "homepage": "https://github.com/soer7022/BjarkeBot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
-    "console-stamp": "^0.2.9",
-    "discord.js": "^12.1.1",
-    "ffmpeg-static": "^4.1.1",
-    "node-opus": "^0.3.3",
-    "nodemon": "^2.0.3",
-    "prism-media": "github:amishshah/prism-media"
+    "@discordjs/voice": "^0.13.0",
+    "discord.js": "^14.6.0",
+    "sodium": "^3.0.2"
   }
 }
