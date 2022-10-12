@@ -1,5 +1,12 @@
 const {SlashCommandBuilder} = require("discord.js");
-const {createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerStatus, NoSubscriberBehavior} = require('@discordjs/voice');
+const {
+    createAudioPlayer,
+    joinVoiceChannel,
+    createAudioResource,
+    AudioPlayerStatus,
+    NoSubscriberBehavior,
+    VoiceConnectionStatus
+} = require('@discordjs/voice');
 const path = require("node:path");
 const fs = require("node:fs");
 
