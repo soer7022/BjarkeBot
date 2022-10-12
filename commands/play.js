@@ -1,5 +1,5 @@
 const {SlashCommandBuilder} = require("discord.js");
-const {createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice');
+const {createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerStatus, NoSubscriberBehavior} = require('@discordjs/voice');
 const path = require("node:path");
 const fs = require("node:fs");
 
@@ -29,9 +29,7 @@ module.exports = {
             const resource = createAudioResource(pathToSound, {metadata: {title: sound, path: pathToSound}});
             const player = createAudioPlayer({
                 behaviors: {
-                    noSubscriber: () => {
-                        interaction.channel.leave();
-                    }
+                    noSubscriber: NoSubscriberBehavior.Stop
                 }
             });
 
@@ -43,14 +41,23 @@ module.exports = {
                 console.error('Error:', error.message, 'with track', error.resource.metadata.title);
             });
 
+            player.addListener('stateChange', (oldState, newState) => {
+                if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
+                    console.log('The audio player has stopped playing!');
+                    connection.destroy();
+                }
+            });
+
 
             const connection = joinVoiceChannel({
                 channelId: interaction.member.voice.channelId,
                 guildId: interaction.guildId,
                 adapterCreator: interaction.guild.voiceAdapterCreator,
             });
-            player.play(resource);
-            connection.subscribe(player);
+            connection.on(VoiceConnectionStatus.Ready, () => {
+                player.play(resource);
+                connection.subscribe(player);
+            });
             //await interaction.reply(`Du har valgt ${sound}`);
             await interaction.reply(`Spiller ${sound}`);
         }
