@@ -1,5 +1,5 @@
 const {SlashCommandBuilder} = require("discord.js");
-const {createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice');
+const {createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerStatus, NoSubscriberBehavior} = require('@discordjs/voice');
 const path = require("node:path");
 const fs = require("node:fs");
 
@@ -29,9 +29,7 @@ module.exports = {
             const resource = createAudioResource(pathToSound, {metadata: {title: sound, path: pathToSound}});
             const player = createAudioPlayer({
                 behaviors: {
-                    noSubscriber: () => {
-                        interaction.channel.leave();
-                    }
+                    noSubscriber: NoSubscriberBehavior.Stop,
                 }
             });
 
@@ -53,8 +51,6 @@ module.exports = {
             await connection.subscribe(player);
             //await interaction.reply(`Du har valgt ${sound}`);
             await interaction.reply(`Spiller ${sound}`);
-            await connection.disconnect();
-            connection.destroy();
         }
     }
 }
