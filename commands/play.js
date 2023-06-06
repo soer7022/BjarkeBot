@@ -49,8 +49,8 @@ module.exports = {
                 guildId: interaction.guildId,
                 adapterCreator: interaction.guild.voiceAdapterCreator,
             });
-            player.play(resource);
-            connection.subscribe(player);
+            await player.play(resource);
+            await connection.subscribe(player);
             //await interaction.reply(`Du har valgt ${sound}`);
             await interaction.reply(`Spiller ${sound}`);
             connection.disconnect();
