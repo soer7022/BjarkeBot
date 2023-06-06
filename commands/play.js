@@ -53,7 +53,7 @@ module.exports = {
             await connection.subscribe(player);
             //await interaction.reply(`Du har valgt ${sound}`);
             await interaction.reply(`Spiller ${sound}`);
-            connection.disconnect();
+            await connection.disconnect();
             connection.destroy();
         }
     }
