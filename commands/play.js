@@ -29,7 +29,9 @@ module.exports = {
             const resource = createAudioResource(pathToSound, {metadata: {title: sound, path: pathToSound}});
             const player = createAudioPlayer({
                 behaviors: {
-                    noSubscriber: NoSubscriberBehavior.Stop,
+                    noSubscriber: () => {
+                        interaction.channel.leave();
+                    }
                 }
             });
 
