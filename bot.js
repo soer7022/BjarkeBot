@@ -48,7 +48,7 @@ client.on('interactionCreate', async interaction => {
             filtered = filtered.slice(0, 25);
         }
         try {
-            await interaction.respond(filtered.map(choice => ({name: choice, value: choice})));
+            await interaction.reply(filtered.map(choice => ({name: choice, value: choice})));
         } catch (error) {
             console.error(error);
             await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
